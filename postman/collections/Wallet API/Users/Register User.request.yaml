@@ -1,0 +1,30 @@
+$kind: http-request
+method: POST
+url: "{{baseUrl}}/api/v1/users"
+order: 1000
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Emmanuel Durotimi",
+      "email": "emmanuel@example.com",
+      "username": "emmanuel",
+      "password": "secret123"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 201", function () {
+        pm.response.to.have.status(201);
+      });
+
+      const response = pm.response.json();
+      if (response.id) {
+        pm.environment.set("userId", response.id);
+      }
+      if (response.wallet && response.wallet.id) {
+        pm.environment.set("walletId", response.wallet.id);
+      }

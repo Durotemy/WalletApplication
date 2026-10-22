@@ -1,0 +1,10 @@
+$kind: collection
+name: Wallet API
+description: |-
+  REST API for the Wallet learning project — a wallet/ledger API built with ASP.NET Core (.NET 10) and PostgreSQL.
+
+  **Base URL:** {{baseUrl}}
+
+  Make sure the **Wallet - Local** environment is selected before sending requests.
+
+  **Getting started:** Register a user (**Users → Register User**). This creates the user and their wallet in one save, and the test script stores `userId` and `walletId` in the environment.

@@ -1,0 +1,13 @@
+$kind: collection
+name: Users
+description: |-
+  Endpoints for registering users. Registering a user also creates their wallet (balance 0).
+
+  **Base route:** `api/v1/users`
+
+  **Validation rules:**
+  - `name`: required, max 30 characters
+  - `email`: required, valid email
+  - `username`: required, 3–30 characters
+  - `password`: required, 6–100 characters
+order: 1000
