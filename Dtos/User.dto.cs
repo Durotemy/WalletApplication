@@ -16,3 +16,5 @@ public record UserRequest(
     string Password
 );
 
+public record UserBalanceRequest(Guid UserID);
+

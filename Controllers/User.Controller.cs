@@ -1,25 +1,4 @@
 
-// using Microsoft.AspNetCore.Mvc;
-// using WalletApi.Dtos;
-// using WalletApi.Services;
-
-// namespace WalletApi.Controllers;
-
-// [ApiController]
-// [Route("api/v1/wallets")]
-// public class WalletController : ControllerBase
-// {
-//     private readonly IWalletService _walletService;
-
-//     public WalletController(IWalletService walletService)
-//     {
-//         _walletService = walletService;
-//     }
-
-//     [HttpPost("login")]
-//     public IActionResult GetAll() => Ok();
-// }
-
 using Microsoft.AspNetCore.Mvc;
 using WalletApi.Dtos;
 using WalletApi.Services;
@@ -33,7 +12,6 @@ public class UserController : ControllerBase
 
 {
     private readonly IUserService _userService;
-
     public UserController(IUserService userService)
 
     {
@@ -46,4 +24,13 @@ public class UserController : ControllerBase
         var user = await _userService.CreateUserAsync(userRequest);
         return Created($"api/v1/users/{user.Id}", user);
     }
+
+    [HttpGet("{id}/wallet")]
+    public async Task<IActionResult> GetBalace([FromRoute] UserBalanceRequest request)
+    {
+        var balance = await _userService.GetBalanceAsync(request.UserID);
+        return Ok(balance);
+    }
 }
+
+// api/v1/users/{id}/wallet

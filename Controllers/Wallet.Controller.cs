@@ -21,4 +21,13 @@ public class WalletController : ControllerBase
         var wallet = await _walletService.CreateWalletAsync(request);
         return Created($"api/v1/wallets/{wallet}", wallet);
     }
+
+    [HttpPost("fund")]
+    public async Task<IActionResult> FundWallet([FromBody] FundWalletRequest request)
+    {
+        var fundWalletResponse = await _walletService.FundWalletAsync(request);
+        return Ok(fundWalletResponse);
+    }
+
 }
+

@@ -127,3 +127,4 @@
 /Users/emmanueldurotimi/Desktop/Wallet/obj/Debug/net10.0/Wallet.pdb
 /Users/emmanueldurotimi/Desktop/Wallet/obj/Debug/net10.0/Wallet.genruntimeconfig.cache
 /Users/emmanueldurotimi/Desktop/Wallet/obj/Debug/net10.0/ref/Wallet.dll
+/Users/emmanueldurotimi/Desktop/Wallet/obj/Debug/net10.0/Wallet.sourcelink.json
