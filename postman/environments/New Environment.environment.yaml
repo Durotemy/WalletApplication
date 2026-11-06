@@ -1,0 +1,8 @@
+name: New Environment
+values:
+  - key: 'http://localhost:5180'
+    value: ''
+  - key: userId
+    value: ''
+  - key: walletId
+    value: ''

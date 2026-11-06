@@ -1,0 +1,29 @@
+$kind: http-request
+method: POST
+url: "{{baseUrl}}/api/v1/wallets/:userId/fund"
+order: 2000
+headers:
+  Content-Type: application/json
+pathVariables:
+  - key: userId
+    value: 01a1a20a-0880-7a7b-88b8-2b59bd069296
+    description: The wallet owner's user id (set automatically by Register User)
+body:
+  type: json
+  content: |-
+    {
+      "amount": 340
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status code is 200", function () {
+        pm.response.to.have.status(200);
+      });
+
+      pm.test("Response has the new balance and user name", function () {
+        const response = pm.response.json();
+        pm.expect(response.balance).to.be.a("number");
+        pm.expect(response.userName).to.be.a("string");
+      });
+    language: text/javascript

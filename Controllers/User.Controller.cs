@@ -25,6 +25,18 @@ public class UserController : ControllerBase
         return Created($"api/v1/users/{user.Id}", user);
     }
 
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetUserById([FromRoute] Guid id)
+    {
+        var user = await _userService.GetUserByIdAsync(id);
+        if (user == null)
+        {
+            return NotFound(new { message = "User not found" });
+        }
+        var userResponse = new UserResponse(user.Id, user.Name, user.Email, user.UserName, user.Wallet == null ? null : new WalletResponse(user.Wallet.Id, user.Wallet.Balance));
+        return Ok(userResponse);
+    }
+
     [HttpGet("{id}/wallet")]
     public async Task<IActionResult> GetBalace([FromRoute] UserBalanceRequest request)
     {

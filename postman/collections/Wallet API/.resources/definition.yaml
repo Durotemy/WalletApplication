@@ -7,4 +7,7 @@ description: |-
 
   Make sure the **Wallet - Local** environment is selected before sending requests.
 
-  **Getting started:** Register a user (**Users → Register User**). This creates the user and their wallet in one save, and the test script stores `userId` and `walletId` in the environment.
+  **Getting started:**
+  1. **Users → Register User** — creates the user and their wallet in one save; the test script stores `userId` and `walletId` in the environment.
+  2. **Users → Get Wallet Balance** — reads the balance for `{{userId}}`.
+  3. **Wallets → Fund Wallet** — adds `amount` to the wallet of `{{userId}}`.

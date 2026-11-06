@@ -1,9 +1,10 @@
 $kind: http-request
 method: POST
-url: "{{baseUrl}}/api/v1/users"
+url: '{{baseUrl}}/api/v1/users'
 order: 1000
 headers:
-  Content-Type: application/json
+  - key: Content-Type
+    value: application/json
 body:
   type: json
   content: |-

@@ -1,0 +1,7 @@
+$kind: collection
+name: Wallets
+description: |-
+  Endpoints for creating and funding wallets.
+
+  **Base route:** `api/v1/wallets`
+order: 2000

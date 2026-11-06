@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace WalletApi.Dtos;
 
 public record UserRequest(
+
     [Required, StringLength(30)]
     string Name,
 
@@ -15,6 +16,11 @@ public record UserRequest(
     [Required, StringLength(100, MinimumLength = 6)]
     string Password
 );
+
+
+
+
+public record UserResponse(Guid Id, string Name, string Email, string UserName, WalletResponse? Wallet = null);
 
 public record UserBalanceRequest(Guid UserID);
 

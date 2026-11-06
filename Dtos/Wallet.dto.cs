@@ -10,7 +10,8 @@ public record WalletResponse(Guid Id, decimal Balance);
 
 
 public record FundWalletRequest(
-    decimal Balance
+    [Required] decimal amount
+
 );
 
 public record FundWalletResponse(
