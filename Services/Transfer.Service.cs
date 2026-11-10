@@ -2,25 +2,20 @@ using WalletApi.Entities;
 using Microsoft.EntityFrameworkCore;
 using WalletApi.Dtos;
 using WalletApi.Data;
-
-
 namespace WalletApi.Services;
 
 public interface ITransferService
 {
     Task<TransferResponse> CreateTransfer(TransferRequest Transfer);
 }
-
 public class TransferService : ITransferService
 {
     private readonly AppDbContext _db;
     public TransferService(AppDbContext db)
 
-
     {
         _db = db;
     }
-
 
     public async Task<TransferResponse> CreateTransfer(TransferRequest Transfer)
     {

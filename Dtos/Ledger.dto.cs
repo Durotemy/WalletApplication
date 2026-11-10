@@ -17,4 +17,7 @@ public record LedgerResponse(
     string Description,
     EntryType EntryType,
     DateTime CreatedAt
-);
+)
+{
+
+}

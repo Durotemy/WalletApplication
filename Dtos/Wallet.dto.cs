@@ -22,7 +22,9 @@ public record FundWalletResponse(
     string TransactionId,
     string Status,
     string Message,
-    string userName
+    string userName,
+    List<LedgerResponse>? LedgerEntries = null
+
 );
 
 

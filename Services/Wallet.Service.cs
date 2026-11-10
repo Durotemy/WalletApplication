@@ -19,7 +19,9 @@ public class WalletService : IWalletService
         _db = db;
     }
 
-    public async Task<FundWalletResponse?> FundWalletAsync(Guid userId, decimal amount, string description)
+    public async Task<FundWalletResponse?> FundWalletAsync(Guid userId, decimal amount, string description
+
+    )
     {
         if (amount <= 0) return null;
 
@@ -47,14 +49,14 @@ public class WalletService : IWalletService
         _db.LedgerEntries.Add(ledgerEntry);
         await _db.SaveChangesAsync();
 
-        await tx.CommitAsync();
-
         var newBalance = await _db.Wallets
             .Where(w => w.Id == wallet.Id)
             .Select(w => w.Balance)
             .FirstAsync();
 
+        await tx.CommitAsync();
+
         return new FundWalletResponse(wallet.Id, newBalance, ledgerEntry.Description, ledgerEntry.Id.ToString(),
-            "success", "funded successfully", user.UserName);
+            "success", "funded successfully", user.UserName, new List<LedgerResponse> { new LedgerResponse(ledgerEntry.Id, ledgerEntry.Amount, ledgerEntry.Description, ledgerEntry.EntryType, ledgerEntry.CreatedAt) });
     }
 }
