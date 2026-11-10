@@ -25,6 +25,13 @@ public class UserController : ControllerBase
         return Created($"api/v1/users/{user.Id}", user);
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var users = await _userService.GetAllUser();
+        return Ok(users);
+    }
+
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetUserById([FromRoute] Guid id)
     {

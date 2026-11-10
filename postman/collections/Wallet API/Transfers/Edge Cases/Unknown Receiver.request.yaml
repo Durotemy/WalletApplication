@@ -1,0 +1,23 @@
+$kind: http-request
+name: Unknown Receiver
+method: POST
+url: '{{baseUrl}}/api/v1/transfers'
+order: 2000
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "fromWalletId": "{{walletId}}",
+      "toWalletId": "{{$guid}}",
+      "amount": 10,
+      "description": "Transfer",
+      "note": "Nobody home"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      console.log("Unknown Receiver ->", pm.response.code, pm.response.text());

@@ -11,6 +11,8 @@ public interface IUserService
 
     Task<User?> GetUserByIdAsync(Guid userId);
 
+    Task<List<UserResponse>> GetAllUser();
+
     Task<WalletResponse?> GetBalanceAsync(Guid UserID);
 }
 public class UserService : IUserService
@@ -39,6 +41,7 @@ public class UserService : IUserService
         _db.Users.Add(user);
         await _db.SaveChangesAsync();
         var userResponse = new UserResponse(user.Id, user.Name, user.Email, user.UserName, user.Wallet == null ? null : new WalletResponse(user.Wallet.Id, user.Wallet.Balance));
+        // return new List<UserResponse> { userResponse };
         return userResponse;
     }
     public async Task<WalletResponse?> GetBalanceAsync(Guid userId)
@@ -82,4 +85,24 @@ public class UserService : IUserService
         Console.WriteLine($"GetUserByIdAsync: UserId: {userId}, User: {user?.UserName}");
         return user;
     }
+
+    public async Task<List<UserResponse>> GetAllUser()
+    {
+        var user = await _db.Users.Include(u => u.Wallet).ThenInclude(w => w!.LedgerEntries).ToListAsync();
+        return await _db.Users
+            .AsNoTracking()
+            .Select(u => new UserResponse(
+                u.Id, u.Name, u.Email, u.UserName,
+                u.Wallet == null ? null : new WalletResponse(
+                    u.Wallet.Id,
+                    u.Wallet.Balance,
+                    u.Wallet.LedgerEntries
+                        .OrderByDescending(l => l.CreatedAt)
+                        .Select(l => new LedgerResponse(l.Id, l.Amount, l.Description, l.EntryType, l.CreatedAt))
+                        .ToList())))
+            .ToListAsync();
+
+        // return user;
+    }
+
 }

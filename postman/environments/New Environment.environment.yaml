@@ -1,8 +1,14 @@
 name: New Environment
 values:
-  - key: 'http://localhost:5180'
-    value: ''
+  - key: baseUrl
+    value: 'http://localhost:5180'
   - key: userId
-    value: ''
+    value: 00000000-0000-0000-0000-000000000000
   - key: walletId
+    value: 00000000-0000-0000-0000-000000000000
+  - key: lastBalance
+    value: '0'
+  - key: recieverWalletId
+    value: ''
+  - key: lastTransferId
     value: ''

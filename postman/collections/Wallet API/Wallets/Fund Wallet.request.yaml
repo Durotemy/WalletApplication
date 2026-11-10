@@ -1,29 +1,48 @@
 $kind: http-request
+name: Fund Wallet
 method: POST
-url: "{{baseUrl}}/api/v1/wallets/:userId/fund"
+url: '{{baseUrl}}/api/v1/wallets/:userId/fund'
 order: 2000
 headers:
   Content-Type: application/json
+  Accept: application/json
 pathVariables:
   - key: userId
-    value: 01a1a20a-0880-7a7b-88b8-2b59bd069296
+    value: '{{userId}}'
     description: The wallet owner's user id (set automatically by Register User)
 body:
   type: json
   content: |-
     {
-      "amount": 340
+      "amount": 340,
+      "description": "Wallet funding"
     }
 scripts:
   - type: afterResponse
+    language: text/javascript
     code: |-
       pm.test("Status code is 200", function () {
         pm.response.to.have.status(200);
       });
 
-      pm.test("Response has the new balance and user name", function () {
-        const response = pm.response.json();
+      const response = pm.response.json();
+
+      pm.test("Response has the funding result", function () {
+        pm.expect(response.id).to.be.a("string");
         pm.expect(response.balance).to.be.a("number");
+        pm.expect(response.description).to.be.a("string").and.not.empty;
+        pm.expect(response.transactionId).to.be.a("string").and.not.empty;
+        pm.expect(response.status).to.eql("success");
         pm.expect(response.userName).to.be.a("string");
       });
-    language: text/javascript
+
+      pm.test("Balance went up by the funded amount", function () {
+        const amount = JSON.parse(pm.request.body.raw).amount;
+        const previous = pm.environment.get("lastBalance");
+        if (previous !== undefined) {
+          pm.expect(response.balance).to.eql(Number(previous) + amount);
+        }
+      });
+
+      pm.environment.set("walletId", response.id);
+      pm.environment.set("lastBalance", response.balance);

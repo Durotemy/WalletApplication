@@ -1,0 +1,23 @@
+$kind: http-request
+name: More Than Balance
+method: POST
+url: '{{baseUrl}}/api/v1/transfers'
+order: 1000
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "fromWalletId": "{{walletId}}",
+      "toWalletId": "{{receiverWalletId}}",
+      "amount": 1000000,
+      "description": "Transfer",
+      "note": "Too much"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      console.log("More Than Balance ->", pm.response.code, pm.response.text());

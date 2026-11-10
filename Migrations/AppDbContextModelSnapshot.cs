@@ -45,14 +45,66 @@ namespace WalletApi.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
+                    b.Property<Guid?>("TransferId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("WalletId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TransferId");
+
                     b.HasIndex("WalletId");
 
-                    b.ToTable("LedgerEntries", (string)null);
+                    b.ToTable("LedgerEntries", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_LedgerEntry_Amount_Positive", "\"Amount\" > 0");
+                        });
+                });
+
+            modelBuilder.Entity("WalletApi.Entities.Transfer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("FromWalletId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<Guid>("ToWalletId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("FromWalletId");
+
+                    b.HasIndex("ToWalletId");
+
+                    b.ToTable("Transfers", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_Transfer_Amount_Positive", "\"Amount\" > 0");
+
+                            t.HasCheckConstraint("CK_Transfer_NotSelf", "\"FromWalletId\" <> \"ToWalletId\"");
+                        });
                 });
 
             modelBuilder.Entity("WalletApi.Entities.User", b =>
@@ -110,18 +162,47 @@ namespace WalletApi.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Wallets", (string)null);
+                    b.ToTable("Wallets", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_Wallet_Balance_NonNegative", "\"Balance\" >= 0");
+                        });
                 });
 
             modelBuilder.Entity("WalletApi.Entities.LedgerEntry", b =>
                 {
+                    b.HasOne("WalletApi.Entities.Transfer", "Transfer")
+                        .WithMany("LedgerEntries")
+                        .HasForeignKey("TransferId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("WalletApi.Entities.Wallet", "Wallet")
                         .WithMany("LedgerEntries")
                         .HasForeignKey("WalletId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("Transfer");
+
                     b.Navigation("Wallet");
+                });
+
+            modelBuilder.Entity("WalletApi.Entities.Transfer", b =>
+                {
+                    b.HasOne("WalletApi.Entities.Wallet", "FromWallet")
+                        .WithMany()
+                        .HasForeignKey("FromWalletId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WalletApi.Entities.Wallet", "ToWallet")
+                        .WithMany()
+                        .HasForeignKey("ToWalletId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("FromWallet");
+
+                    b.Navigation("ToWallet");
                 });
 
             modelBuilder.Entity("WalletApi.Entities.Wallet", b =>
@@ -131,6 +212,11 @@ namespace WalletApi.Migrations
                         .HasForeignKey("WalletApi.Entities.Wallet", "UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WalletApi.Entities.Transfer", b =>
+                {
+                    b.Navigation("LedgerEntries");
                 });
 
             modelBuilder.Entity("WalletApi.Entities.User", b =>

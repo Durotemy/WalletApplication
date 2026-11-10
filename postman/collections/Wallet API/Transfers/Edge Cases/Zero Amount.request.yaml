@@ -1,0 +1,23 @@
+$kind: http-request
+name: Zero Amount
+method: POST
+url: '{{baseUrl}}/api/v1/transfers'
+order: 6000
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "fromWalletId": "{{walletId}}",
+      "toWalletId": "{{receiverWalletId}}",
+      "amount": 0,
+      "description": "Transfer",
+      "note": "Nothing"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      console.log("Zero Amount ->", pm.response.code, pm.response.text());

@@ -1,15 +1,19 @@
 $kind: http-request
+name: Create Wallet
 method: POST
-url: '{{baseUrl}}/api/v1/wallets'
+url: '{{baseUrl}}/api/v1/users'
 order: 1000
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
+  Accept: application/json
 body:
   type: json
   content: |-
     {
-      "balance": 0
+      "name": "Wallet User",
+      "email": "wallet.user@example.com",
+      "username": "walletuser",
+      "password": "secret123"
     }
 scripts:
   - type: afterResponse
@@ -21,5 +25,8 @@ scripts:
 
       const response = pm.response.json();
       if (response.id) {
-        pm.environment.set("walletId", response.id);
+        pm.environment.set("userId", response.id);
+      }
+      if (response.wallet && response.wallet.id) {
+        pm.environment.set("walletId", response.wallet.id);
       }

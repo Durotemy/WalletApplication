@@ -14,6 +14,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddScoped<IWalletService, WalletService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITransferService, TransferService>();
 
 
 var app = builder.Build();

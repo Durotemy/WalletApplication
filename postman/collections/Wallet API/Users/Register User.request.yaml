@@ -1,22 +1,21 @@
 $kind: http-request
 method: POST
-url: '{{baseUrl}}/api/v1/users'
+url: "{{baseUrl}}/api/v1/users"
 order: 1000
 headers:
-  - key: Content-Type
-    value: application/json
+  Content-Type: application/json
+  Accept: application/json
 body:
   type: json
   content: |-
     {
-      "name": "Emmanuel Durotimi",
-      "email": "emmanuel@example.com",
-      "username": "emmanuel",
+      "name": "Adesina",
+      "email": "adesina@example.com",
+      "username": "Adesina",
       "password": "secret123"
     }
 scripts:
   - type: afterResponse
-    language: text/javascript
     code: |-
       pm.test("Status code is 201", function () {
         pm.response.to.have.status(201);
@@ -29,3 +28,4 @@ scripts:
       if (response.wallet && response.wallet.id) {
         pm.environment.set("walletId", response.wallet.id);
       }
+    language: text/javascript

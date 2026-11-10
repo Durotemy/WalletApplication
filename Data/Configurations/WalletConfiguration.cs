@@ -8,8 +8,8 @@ public class WalletConfiguration : IEntityTypeConfiguration<Wallet>
 {
     public void Configure(EntityTypeBuilder<Wallet> builder)
     {
-        builder.ToTable("Wallets");
-        builder.HasKey(x => x.Id);
+        builder.ToTable("Wallets", t =>
+            t.HasCheckConstraint("CK_Wallet_Balance_NonNegative", "\"Balance\" >= 0")); builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Id)
                .ValueGeneratedOnAdd();

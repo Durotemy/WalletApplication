@@ -1,0 +1,37 @@
+$kind: http-request
+name: Create Transfer
+method: POST
+url: '{{baseUrl}}/api/v1/transfers'
+order: 2000
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "fromWalletId": "{{walletId}}",
+      "toWalletId": "{{receiverWalletId}}",
+      "amount": 50,
+      "description": "Transfer",
+      "note": "Lunch money"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 2xx", function () {
+        pm.expect(pm.response.code).to.be.within(200, 299);
+      });
+
+      const response = pm.response.json();
+      const request = JSON.parse(pm.request.body.raw);
+
+      pm.test("Response describes the transfer", function () {
+        pm.expect(response.id).to.be.a("string").and.not.empty;
+        pm.expect(response.fromWalletId).to.eql(request.fromWalletId);
+        pm.expect(response.toWalletId).to.eql(request.toWalletId);
+        pm.expect(response.amount).to.eql(request.amount);
+      });
+
+      pm.environment.set("lastTransferId", response.id);

@@ -1,0 +1,13 @@
+$kind: collection
+name: Transfers
+description: |-
+  Move money between two wallets. Each transfer writes one Transfer row and two LedgerEntries rows (a debit and a credit).
+
+  **Base route:** `api/v1/transfers`
+
+  **Run order:**
+  1. **Users → Register User** — the sender (`walletId`). Then **Wallets → Fund Wallet** so it has money.
+  2. **Transfers → Register Receiver** — a second user; stores `receiverWalletId`.
+  3. **Transfers → Create Transfer** — sends `amount` from `walletId` to `receiverWalletId`.
+  4. **Transfers → Edge Cases** — predict the result first, then send, then check the database.
+order: 3000

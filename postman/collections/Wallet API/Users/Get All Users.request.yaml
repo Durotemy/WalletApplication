@@ -1,0 +1,30 @@
+$kind: http-request
+name: Get All Users
+method: GET
+url: '{{baseUrl}}/api/v1/users'
+order: 3000
+headers:
+  Accept: application/json
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 200", function () {
+        pm.response.to.have.status(200);
+      });
+
+      const users = pm.response.json();
+
+      pm.test("Response is a list of users", function () {
+        pm.expect(users).to.be.an("array");
+      });
+
+      pm.test("No user exposes a password", function () {
+        users.forEach(u => pm.expect(u).to.not.have.property("password"));
+      });
+
+      pm.test("Each user has a wallet id", function () {
+        users.forEach(u => pm.expect(u.wallet && u.wallet.id).to.be.a("string"));
+      });
+
+      console.log(users.map(u => `${u.userName} -> wallet ${u.wallet && u.wallet.id}`).join("\n"));

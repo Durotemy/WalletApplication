@@ -20,7 +20,7 @@ public class WalletController : ControllerBase
     [HttpPost("{userId:guid}/fund")]
     public async Task<IActionResult> FundWallet(Guid userId, [FromBody] FundWalletRequest request)
     {
-        var fundWalletResponse = await _walletService.FundWalletAsync(userId, request.amount);
+        var fundWalletResponse = await _walletService.FundWalletAsync(userId, request.amount, request.description);
         return Ok(fundWalletResponse);
     }
 

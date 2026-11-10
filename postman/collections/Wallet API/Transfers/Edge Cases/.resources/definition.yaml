@@ -1,0 +1,13 @@
+$kind: collection
+name: Edge Cases
+description: |-
+  These requests have no pass/fail tests on purpose.
+
+  For each one:
+  1. **Predict** the status code, the error message and whether any balance changes.
+  2. **Send** it and read the Console output.
+  3. **Check the database:** `SELECT "Id", "Balance" FROM "Wallets";` and the latest `LedgerEntries` rows.
+  4. **Log** what surprised you. Each surprise becomes a test in Phase 9.
+
+  Concurrency (two transfers at the same moment) needs the Collection Runner. One request can't show it.
+order: 3000

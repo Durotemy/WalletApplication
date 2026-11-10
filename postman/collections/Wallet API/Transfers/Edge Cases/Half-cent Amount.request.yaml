@@ -1,0 +1,23 @@
+$kind: http-request
+name: Half-cent Amount
+method: POST
+url: '{{baseUrl}}/api/v1/transfers'
+order: 4000
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "fromWalletId": "{{walletId}}",
+      "toWalletId": "{{receiverWalletId}}",
+      "amount": 0.005,
+      "description": "Transfer",
+      "note": "Half a cent"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      console.log("Half-cent Amount ->", pm.response.code, pm.response.text());

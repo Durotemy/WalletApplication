@@ -1,0 +1,29 @@
+$kind: http-request
+name: Register Receiver
+method: POST
+url: '{{baseUrl}}/api/v1/users'
+order: 1000
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Receiver",
+      "email": "receiver{{$timestamp}}@example.com",
+      "username": "recv{{$timestamp}}",
+      "password": "secret123"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      pm.test("Status code is 201", function () {
+        pm.response.to.have.status(201);
+      });
+
+      const response = pm.response.json();
+      if (response.wallet && response.wallet.id) {
+        pm.environment.set("receiverWalletId", response.wallet.id);
+      }

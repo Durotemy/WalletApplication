@@ -6,3 +6,9 @@ values:
     value: 00000000-0000-0000-0000-000000000000
   - key: walletId
     value: 00000000-0000-0000-0000-000000000000
+  - key: lastBalance
+    value: '0'
+  - key: receiverWalletId
+    value: 00000000-0000-0000-0000-000000000000
+  - key: lastTransferId
+    value: ''

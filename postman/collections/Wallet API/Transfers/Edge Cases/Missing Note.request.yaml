@@ -1,0 +1,22 @@
+$kind: http-request
+name: Missing Note
+method: POST
+url: '{{baseUrl}}/api/v1/transfers'
+order: 5000
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "fromWalletId": "{{walletId}}",
+      "toWalletId": "{{receiverWalletId}}",
+      "amount": 10,
+      "description": "Transfer"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      console.log("Missing Note ->", pm.response.code, pm.response.text());

@@ -1,0 +1,23 @@
+$kind: http-request
+name: Sub-cent Amount
+method: POST
+url: '{{baseUrl}}/api/v1/transfers'
+order: 3000
+headers:
+  Content-Type: application/json
+  Accept: application/json
+body:
+  type: json
+  content: |-
+    {
+      "fromWalletId": "{{walletId}}",
+      "toWalletId": "{{receiverWalletId}}",
+      "amount": 0.001,
+      "description": "Transfer",
+      "note": "Tenth of a cent"
+    }
+scripts:
+  - type: afterResponse
+    language: text/javascript
+    code: |-
+      console.log("Sub-cent Amount ->", pm.response.code, pm.response.text());
